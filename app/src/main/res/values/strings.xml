@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RideOut</string>
+    <string name="title_section1">Local Rides</string>
+    <string name="title_section2">My Rides</string>
+    <string name="title_section3">My Profile</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_signin">MyProfile</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_create_aride">Create A Ride</string>
+    <string name="title_activity_my_rides">My Rides</string>
+    <string name="title_activity_ride_details">Ride Details</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="icon_content_description">Hello blank fragment</string>
+    <string name="date">Date</string>
+    <string name="select_date">Date Details</string>
+    <string name="time">Time</string>
+    <string name="select_time">Time Details</string>
+    <string name="pickup">Pick Up Location</string>
+    <string name="select_pickup">Select Pick Up Location</string>
+    <string name="dropoff">Drop Off Location</string>
+    <string name="select_dropoff">Select Drop Off Location</string>
+    <string name="notes">Notes</string>
+    <string name="notes_description">Any additional notes go here</string>
+
+
+    <string name="create_ride">Let\'s Ride!</string>
+    <string name="create_ride_details">Make sure you filled everything out.</string>
+    <!--Map Activity Strings -->
+    <string name="submit">Submit</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ride_name">Ride name goes here</string>
+    <string name="num_riders">2 Riders</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="search"></string>
+    <string name="title_activity_google_places_autocomplete">GooglePlacesAutocompleteActivity</string>
+    <string name="autocomplete_key">AIzaSyADDZqy2TKxEDcRwN0RhnN233hklH3wMak</string>
+    <string name="pick">Pick</string>
+
+
+</resources>

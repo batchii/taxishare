@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.rideout.app.mobile.rideout.view.SigninActivity"
+    android:weightSum="1">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_drawer" />
+
+        <Button
+            android:id="@+id/btnChangeImage"
+            android:layout_width="154dp"
+            android:layout_height="141dp"
+            android:text="Change Image" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Allow Riders to Contact?"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity = "center"/>
+        <ToggleButton
+            android:id="@+id/allow_Contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="On"
+            android:textOff="Off"
+            android:background="@drawable/my_btn_toggle"
+            android:checked="true"
+            android:gravity = "center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Feeling Social?"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity = "center"/>
+        <ToggleButton
+            android:id="@+id/text_social"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="On"
+            android:textOff="Off"
+            android:background="@drawable/my_btn_toggle"
+            android:checked="true"
+            android:gravity = "center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4px">
+
+        <TextView android:id="@+id/longest_walk"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="Longest Walking Distance?"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity = "center"/>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="87dp"
+            android:layout_height="47dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_weight="0.06"
+            android:gravity = "center"/>
+    </LinearLayout>
+
+</LinearLayout>
