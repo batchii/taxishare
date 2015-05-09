@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -214,9 +215,10 @@ public class GooglePlacesAutocompleteActivity extends Activity  {
     }
     public void commit(View view){
         TextView address = (CustomAutoCompleteTextView)findViewById(R.id.autoCompleteTextView);
-        Intent returnToMap = new Intent();
-        returnToMap.putExtra("ADDRESS", address.getText().toString());
-        setResult(RESULT_OK, returnToMap);
+        Intent returnToMain = new Intent();
+
+        returnToMain.putExtra("ADDRESS", address.getText().toString());
+        setResult(RESULT_OK, returnToMain);
         finish();
     }
 

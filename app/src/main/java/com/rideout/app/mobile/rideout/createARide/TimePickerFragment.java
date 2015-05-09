@@ -42,8 +42,10 @@ public class TimePickerFragment extends DialogFragment
         Calendar currentTime = Calendar.getInstance();
         currentTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
         currentTime.set(Calendar.MINUTE, minute);
-        Date selectedTime = currentTime.getTime();
-        String formattedTime = selectedTime.toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
+            String formattedTime = sdf.format(currentTime.getTime());
+
         Intent i = new Intent();
         i.putExtra("selectedTime",formattedTime);
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
