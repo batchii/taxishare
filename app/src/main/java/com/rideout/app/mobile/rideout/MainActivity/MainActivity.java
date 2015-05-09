@@ -48,7 +48,6 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        Log.v("wth", "wth");
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(

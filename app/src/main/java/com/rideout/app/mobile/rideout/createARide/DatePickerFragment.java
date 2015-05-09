@@ -3,7 +3,6 @@ package com.rideout.app.mobile.rideout.createARide;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;

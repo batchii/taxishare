@@ -2,21 +2,31 @@ package com.rideout.app.mobile.rideout.createARide;
 
         import android.app.ActionBar;
         import android.app.Activity;
+        import android.app.AlertDialog;
         import android.content.Context;
+        import android.content.DialogInterface;
         import android.content.Intent;
         import android.content.res.Resources;
         import android.graphics.drawable.Drawable;
+        import android.os.AsyncTask;
         import android.os.Bundle;
         import android.support.v4.app.DialogFragment;
         import android.support.v4.app.Fragment;
         import android.support.v4.app.ListFragment;
+        import android.text.Editable;
+        import android.text.TextWatcher;
         import android.util.Log;
         import android.util.Size;
         import android.view.Gravity;
+        import android.view.MotionEvent;
         import android.view.View;
+        import android.widget.ArrayAdapter;
+        import android.widget.AutoCompleteTextView;
         import android.widget.Button;
+        import android.widget.EditText;
         import android.widget.FrameLayout;
         import android.widget.ListView;
+        import android.widget.SimpleAdapter;
         import android.widget.Toast;
 
         import com.google.android.gms.maps.model.LatLng;
@@ -30,9 +40,20 @@ package com.rideout.app.mobile.rideout.createARide;
         import com.rideout.app.mobile.rideout.myrides.MyRides;
 
 
+        import java.io.BufferedReader;
+        import java.io.IOException;
+        import java.io.InputStream;
+        import java.io.InputStreamReader;
+        import java.io.UnsupportedEncodingException;
+        import java.net.HttpURLConnection;
+        import java.net.URL;
+        import java.net.URLEncoder;
         import java.util.ArrayList;
+        import java.util.HashMap;
         import java.util.List;
         import android.view.ViewGroup.LayoutParams;
+
+        import org.json.JSONObject;
 
 
 public class ListViewFragment extends ListFragment {
@@ -50,6 +71,11 @@ public class ListViewFragment extends ListFragment {
     private List<ListViewItem> mItems;
     private MySimpleArrayAdapter adapter;
 
+
+    public AutoCompleteTextView myAutoComplete;
+
+    PlacesTask placesTask;
+    ParserTask parserTask;
     //DO YOU SHIT IN THE onActivityResult METHOD AND THE onCreate WHERE THE LISTENER IS FOR THE LET'S RIDE BUTTON
 
     @Override
@@ -69,7 +95,7 @@ public class ListViewFragment extends ListFragment {
         adapter = new MySimpleArrayAdapter(getActivity(), mItems);
         //setListAdapter(new MySimpleArrayAdapter(getActivity(), mItems));
         setListAdapter(adapter);
-
+        myAutoComplete = new AutoCompleteTextView(getActivity());
 
     }
 
@@ -98,17 +124,17 @@ public class ListViewFragment extends ListFragment {
                 datePicker.show(getFragmentManager().beginTransaction(), "datePicker");
                 break;
             case 2:
-                Intent mapPickUpIntent = new Intent(getActivity(), MapsActivity.class);
-                mapPickUpIntent.putExtra("LOCATION_TYPE", PICKUP_CODE);
-                startActivityForResult(mapPickUpIntent,PICKUP_CODE);
-
+                showAutocompleteDialog();
                 break;
             case 3:
-                Intent mapDropOffIntent = new Intent(getActivity(), MapsActivity.class);
+                /*Intent mapDropOffIntent = new Intent(getActivity(), MapsActivity.class);
                 mapDropOffIntent.putExtra("LOCATION_TYPE", DROPOFF_CODE);
-                startActivityForResult(mapDropOffIntent,DROPOFF_CODE);
+                startActivityForResult(mapDropOffIntent,DROPOFF_CODE);*/
+                showAutocompleteDialog();
+
                 break;
             case 4:
+                showNoteDialog();
 
                 break;
             case 5:
@@ -199,7 +225,233 @@ public class ListViewFragment extends ListFragment {
                     }
         }
     }
+    protected void showNoteDialog() {
 
+        Context context = this.getActivity();
+
+        AlertDialog.Builder ad = new AlertDialog.Builder(context);
+        ad.setTitle("Ride notes:");
+
+        final EditText input = new EditText(context);
+        ad.setView(input);
+
+        ad.setCancelable(true)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String notes = input.getText().toString().trim();
+                        if (notes.length() == 0) {
+                            // display some toast here?
+                        } else {
+                            // pass string to database
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alert = ad.create();
+        alert.show();
+    }
+
+    protected void showAutocompleteDialog(){
+        Context context = this.getActivity();
+        AlertDialog.Builder ad = new AlertDialog.Builder(context);
+        ad.setTitle("Location:");
+
+
+
+        ad.setView(myAutoComplete);
+
+        myAutoComplete.setThreshold(1);
+
+        myAutoComplete.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                placesTask = new PlacesTask();
+                placesTask.execute(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+        });
+        myAutoComplete.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                myAutoComplete.showDropDown();
+                return false;
+            }
+        });
+
+        ad.setCancelable(true)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        String loc = myAutoComplete.getText().toString().trim();
+                        if(loc.length() == 0){
+                            //change stuff here
+                        } else {
+                            // pass string to database
+                        }
+                    }
+                })
+                .setNegativeButton("CanceL", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = ad.create();
+        alert.show();
+
+
+
+    }
+    /** A method to download json data from url */
+    private String downloadUrl(String strUrl) throws IOException {
+        String data = "";
+        InputStream iStream = null;
+        HttpURLConnection urlConnection = null;
+        try{
+            URL url = new URL(strUrl);
+
+            // Creating an http connection to communicate with url
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            // Connecting to url
+            urlConnection.connect();
+
+            // Reading data from url
+            iStream = urlConnection.getInputStream();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+            StringBuilder sb = new StringBuilder();
+
+            String line = "";
+            while( ( line = br.readLine()) != null){
+                sb.append(line);
+            }
+
+            data = sb.toString();
+
+            br.close();
+
+        }catch(Exception e){
+            Log.d("Exception downloading", e.toString());
+        }finally{
+            iStream.close();
+            urlConnection.disconnect();
+        }
+        return data;
+    }
+
+    // Fetches all places from GooglePlaces AutoComplete Web Service
+    private class PlacesTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... place) {
+            // For storing data from web service
+            String data = "";
+
+
+            //TODO This needs to be put on a proxy web app, very insecure this way,
+            // http://stackoverflow.com/questions/14654758/google-places-api-request-denied-for-android-autocomplete-even-with-the-right-a
+            // Obtain browser key from https://code.google.com/apis/console
+            String key = "key="+getString(R.string.autocomplete_key);
+            String input="";
+
+            try {
+                input = "input=" + URLEncoder.encode(place[0], "utf-8");
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
+
+            // place type to be searched
+            String types = "types=geocode";
+
+            // Sensor enabled
+            String sensor = "sensor=false";
+
+            // Building the parameters to the web service
+            String parameters = input+"&"+types+"&"+sensor+"&"+key;
+
+            // Output format
+            String output = "json";
+
+            // Building the url to the web service
+            String url = "https://maps.googleapis.com/maps/api/place/autocomplete/"+output+"?"+parameters;
+            try{
+                // Fetching the data from we service
+                data = downloadUrl(url);
+            }catch(Exception e){
+                Log.d("Background Task",e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            // Creating ParserTask
+            parserTask = new ParserTask();
+
+            // Starting Parsing the JSON string returned by Web Service
+            parserTask.execute(result);
+        }
+    }
+
+
+
+    /** A class to parse the Google Places in JSON format */
+    private class ParserTask extends AsyncTask<String, Integer, List<HashMap<String,String>>>{
+
+        JSONObject jObject;
+
+        @Override
+        protected List<HashMap<String, String>> doInBackground(String... jsonData) {
+
+            List<HashMap<String, String>> places = null;
+
+            PlaceJSONParser placeJsonParser = new PlaceJSONParser();
+
+            try{
+                jObject = new JSONObject(jsonData[0]);
+
+                // Getting the parsed data as a List construct
+                places = placeJsonParser.parse(jObject);
+
+            }catch(Exception e){
+                Log.d("Exception",e.toString());
+            }
+            return places;
+        }
+
+        @Override
+        protected void onPostExecute(List<HashMap<String, String>> result) {
+
+            String[] from = new String[] { "description"};
+            int[] to = new int[] { android.R.id.text1 };
+
+            // Creating a SimpleAdapter for the AutoCompleteTextView
+            SimpleAdapter adapter = new SimpleAdapter(getActivity(), result, android.R.layout.simple_list_item_1, from, to);
+
+            // Setting the adapter
+            myAutoComplete.setAdapter(adapter);
+            myAutoComplete.showDropDown();
+        }
+    }
 
 
 
