@@ -7,6 +7,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -23,6 +24,26 @@ public class Ride extends ParseObject {
         // A default constructor is required.
     }
 
+
+    //CHANGED FROM STRINGS TO CALENDAR
+
+    public Date getRideDate() {
+        return getDate("date");
+    }
+
+    public void setRideDate(Date date) {
+        put("date", date);
+    }
+
+    public Date getRideTime() {
+        return getDate("time");
+    }
+
+    public void setRideTime(Date time) {
+        put("time", time);
+    }
+
+    /*
     //Might have to convert to String instead.
     public String getRideDate() {
         return getString("date");
@@ -39,7 +60,7 @@ public class Ride extends ParseObject {
     public void setRideTime(String time) {
         put("time", time);
     }
-
+*/
 
     public ParseGeoPoint getOrigin() { return getParseGeoPoint("origin"); }
 

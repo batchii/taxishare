@@ -43,7 +43,10 @@ package com.rideout.app.mobile.rideout.createARide;
         import java.net.HttpURLConnection;
         import java.net.URL;
         import java.net.URLEncoder;
+        import java.text.SimpleDateFormat;
         import java.util.ArrayList;
+        import java.util.Calendar;
+        import java.util.Date;
         import java.util.HashMap;
         import java.util.List;
 
@@ -57,8 +60,10 @@ public class ListViewFragment extends ListFragment {
     private static final int PICKUP_CODE = 3;
     private static final int DROPOFF_CODE = 4;
 
-    private String resultDate;
-    private String resultTime;
+
+    //Changed from String to Calendar
+    private Date resultDate;
+    private Date resultTime;
     //private Address pickUpLoc;
     //private Address dropOffLoc;
     private String pickUpLoc;
@@ -233,12 +238,19 @@ public class ListViewFragment extends ListFragment {
                 case DATEPICKER_FRAGMENT:
                     if(resultCode == Activity.RESULT_OK){
                         Bundle bundle=data.getExtras();
-                        resultDate = bundle.getString("selectedDate","error");
-                        Log.v("Date", resultDate);
+
+                        Calendar c = (Calendar)bundle.get("selectedDate");
+                        //resultDate = bundle.get("selectedDate", "error"); //Changed from getString
+                        resultDate = c.getTime();
+                        //format the date for display!
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        String formattedDate = sdf.format(resultDate);
+
+                        Log.v("Date", formattedDate);
 
                         mItems.set(1, new ListViewItem(new IconDrawable(this.getActivity(),
                                 Iconify.IconValue.fa_calendar_o).actionBarSize(),
-                                getString(R.string.date), resultDate));
+                                getString(R.string.date), formattedDate));
                         adapter.notifyDataSetChanged();
 
                     }
@@ -246,12 +258,20 @@ public class ListViewFragment extends ListFragment {
                 case TIMEPICKER_FRAGMENT:
                     if(resultCode == Activity.RESULT_OK){
                         Bundle bundle = data.getExtras();
-                        resultTime = bundle.getString("selectedTime", "error");
-                        Log.v("Time", resultTime);
+
+                        Calendar c = (Calendar)bundle.get("selectedTime");
+                        //resultTime = bundle.get("selectedTime", "error"); //Changed from getString
+                        //format the time for display
+                        resultTime = c.getTime();
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
+                        String formattedTime = sdf.format(resultTime);
+
+                        Log.v("Time", formattedTime);
 
                         mItems.set(0, new ListViewItem(new IconDrawable(this.getActivity(),
                                 Iconify.IconValue.fa_clock_o).actionBarSize(),
-                                getString(R.string.time), resultTime));
+                                getString(R.string.time), formattedTime));
                         adapter.notifyDataSetChanged();
                     }
                     break;
