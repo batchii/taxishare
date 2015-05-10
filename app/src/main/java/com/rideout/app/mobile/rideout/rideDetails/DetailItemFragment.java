@@ -89,18 +89,18 @@ public class DetailItemFragment extends ListFragment {
                 //datePicker.show(getFragmentManager().beginTransaction(), "datePicker");
                 break;
             case 2:
-                Intent mapPickUpIntent = new Intent(getActivity(), MapsActivity.class);
+                /*Intent mapPickUpIntent = new Intent(getActivity(), MapsActivity.class);
                 mapPickUpIntent.putExtra("LOCATION_TYPE", PICKUP_CODE);
                 startActivityForResult(mapPickUpIntent,PICKUP_CODE);
-
+*/
                 break;
             case 3:
-                Intent mapDropOffIntent = new Intent(getActivity(), MapsActivity.class);
+                /*Intent mapDropOffIntent = new Intent(getActivity(), MapsActivity.class);
                 mapDropOffIntent.putExtra("LOCATION_TYPE", DROPOFF_CODE);
-                startActivityForResult(mapDropOffIntent,DROPOFF_CODE);
+                startActivityForResult(mapDropOffIntent,DROPOFF_CODE);*/
                 break;
             case 4:
-                showNoteDialog();
+                //  showNoteDialog();
                 break;
         }
 

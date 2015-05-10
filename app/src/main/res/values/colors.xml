@@ -12,7 +12,8 @@
     <color name="aqua">#00FFFF</color>
     <color name="lime">#00FF00</color>
     <color name="teal">#008080</color>
-    <color name="green">#008000</color>
+    <color name="green_primary">#4CAF50</color>
+    <color name="green_secondary">#81C784</color>
     <color name="blue">#0000FF</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
