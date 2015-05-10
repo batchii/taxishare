@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
 import com.rideout.app.mobile.rideout.R;
 import com.rideout.app.mobile.rideout.createARide.CreateARide;
+import com.rideout.app.mobile.rideout.createARide.ListViewFragment;
 import com.rideout.app.mobile.rideout.myrides.MyRides;
 import com.rideout.app.mobile.rideout.myrides.MyRidesListViewFragment;
 import com.rideout.app.mobile.rideout.view.SigninActivity;
@@ -42,7 +43,6 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
     private SwipeRefreshLayout swipeLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +83,8 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = null;
+
         //fragmentManager.beginTransaction()
                // .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 //.commit();
@@ -90,23 +92,26 @@ public class MainActivity extends ActionBarActivity
             case 0:
                 break;
             case 1:
-                Intent  myRides = new Intent(this, MyRides.class);
-                startActivity(myRides);
+                fragment = new MyRidesListViewFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
                 break;
             case 2:
                 Intent signIn = new Intent(this, SigninActivity.class);
                 startActivity(signIn);
                 break;
             case 3:
-                Intent createRide = new Intent(this, CreateARide.class);
-                startActivity(createRide);
+                fragment = new ListViewFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
+                /*Intent createRide = new Intent(this, CreateARide.class);
+                startActivity(createRide);*/
                 break;
         }
 
-       /* FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();*/
+
     }
 
     public void onSectionAttached(int number) {
