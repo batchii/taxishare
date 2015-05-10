@@ -6,6 +6,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -40,26 +41,28 @@ public class Ride extends ParseObject {
     }
 
 
+    public ParseGeoPoint getOrigin() { return getParseGeoPoint("origin"); }
 
+    public void setOrigin(ParseGeoPoint loc) {
+        put("origin", loc);
+    }
     //Use the Android GeoCode library.  Have it convert an address to a lattitude and longitude and then use those coordinates for Parse GeoPoints.
 
-    public ParseGeoPoint getStartLocation() {
-        return getParseGeoPoint("start");
+    public String getStartLocation() {
+        return getString("start");
     }
 
-    public void setStartLocation(ParseGeoPoint start) {
+    public void setStartLocation(String start) {
         put("start", start);
     }
 
-    public ParseGeoPoint getEndLocation() {
-        return getParseGeoPoint("end");
+    public String getEndLocation() {
+        return getString("end");
     }
 
-    public void setEndLocation(ParseGeoPoint end) {
+    public void setEndLocation(String end) {
         put("end", end);
     }
-
-
 
     public String getNotes() {
         return getString("notes");
@@ -71,6 +74,12 @@ public class Ride extends ParseObject {
 
     public ArrayList<ParseUser> getRiders() {
         return (ArrayList)get("riders");
+    }
+
+    public void setRiders(ParseUser user) {
+        ArrayList<ParseUser> temp = new ArrayList<>();
+        temp.add(user);
+        put("riders", temp);
     }
 
     public void addRider(ParseUser user) {

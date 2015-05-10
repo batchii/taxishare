@@ -22,11 +22,16 @@ package com.rideout.app.mobile.rideout.createARide;
         import android.widget.EditText;
         import android.widget.ListView;
         import android.widget.SimpleAdapter;
+        import android.widget.Toast;
 
         import com.google.android.gms.maps.model.LatLng;
         import com.joanzapata.android.iconify.IconDrawable;
         import com.joanzapata.android.iconify.Iconify;
+        import com.parse.ParseGeoPoint;
+        import com.parse.ParseObject;
+        import com.parse.ParseUser;
         import com.rideout.app.mobile.rideout.R;
+        import com.rideout.app.mobile.rideout.Ride;
         import com.rideout.app.mobile.rideout.myrides.MyRides;
 
 
@@ -54,8 +59,14 @@ public class ListViewFragment extends ListFragment {
 
     private String resultDate;
     private String resultTime;
-    private LatLng pickUpLoc;
-    private LatLng dropOffLoc;
+    //private Address pickUpLoc;
+    //private Address dropOffLoc;
+    private String pickUpLoc;
+    private String dropOffLoc;
+    private String notes;
+    //private LatLng pickUpLoc;
+    //private LatLng dropOffLoc;
+    private LatLng origin = null;
 
     private List<ListViewItem> mItems;
     private MySimpleArrayAdapter adapter;
@@ -126,6 +137,56 @@ public class ListViewFragment extends ListFragment {
             case 5:
                 final Context context = getActivity();
 
+                final Ride ride = new Ride();
+                if (resultDate != null) {
+                    ride.setRideDate(resultDate);
+                } else {
+                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (resultTime != null) {
+                    ride.setRideTime(resultTime);
+                } else {
+                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (pickUpLoc != null) {
+                    ride.setStartLocation(pickUpLoc);
+                } else {
+                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (dropOffLoc != null) {
+                    ride.setEndLocation(dropOffLoc);
+                } else {
+                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (notes != null) {
+                    ride.setNotes(notes);
+                } else {
+                    ride.setNotes("");
+                }
+                if (origin != null) {
+                    ParseGeoPoint loc = new ParseGeoPoint(origin.latitude, origin.longitude);
+                    ride.setOrigin(loc);
+                } else {
+                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Toast.makeText(context, "Entered primary information", Toast.LENGTH_LONG).show();
+                //Add one for notes
+                ParseUser user = ParseUser.getCurrentUser();
+                ride.setRiders(user);
+                ride.saveInBackground();
+
+
+                /*ParseObject ride = new ParseObject("RideObject");
+                ride.put("date", resultDate);
+                ride.put("time", resultTime);
+                ride.put("start", pickUpLoc.toString());
+                ride.put("end", dropOffLoc.toString());
+                ride.saveInBackground();*/
                /* Toast.makeText(context, "Entered onClick", Toast.LENGTH_LONG).show();
                 final Ride ride = new Ride();
                 if (!resultDate.equals(null)) {
@@ -198,9 +259,11 @@ public class ListViewFragment extends ListFragment {
                     if(resultCode == Activity.RESULT_OK){
                         Bundle bundle=data.getExtras();
                         String address = (String) bundle.get("ADDRESS");
+                        pickUpLoc = address;
                         try{
                             Address loc = geocoder.getFromLocationName(address, 1).get(0);
-                            pickUpLoc = new LatLng(loc.getLatitude(), loc.getLongitude());
+                            //pickUpLoc = loc;
+                            origin = new LatLng(loc.getLatitude(), loc.getLongitude());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -215,9 +278,11 @@ public class ListViewFragment extends ListFragment {
                     if(resultCode == Activity.RESULT_OK){
                         Bundle bundle=data.getExtras();
                         String address = (String) bundle.get("ADDRESS");
+                        dropOffLoc = address;
                         try{
                             Address loc = geocoder.getFromLocationName(address, 1).get(0);
-                            dropOffLoc = new LatLng(loc.getLatitude(), loc.getLongitude());
+                            //dropOffLoc = loc;
+                            //dropOffLoc = new LatLng(loc.getLatitude(), loc.getLongitude());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -240,12 +305,12 @@ public class ListViewFragment extends ListFragment {
         ad.setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String notes = input.getText().toString().trim();
+                        notes = input.getText().toString().trim();
                         if (notes.length() == 0) {
                             // display some toast here?
                         } else {
                             // pass string to database
-                            mItems.set(0, new ListViewItem(new IconDrawable(getActivity(),
+                            mItems.set(4, new ListViewItem(new IconDrawable(getActivity(),
                                     Iconify.IconValue.fa_pencil_square).actionBarSize(),
                                     getString(R.string.notes), notes));
                         }

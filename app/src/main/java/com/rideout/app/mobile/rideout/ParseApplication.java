@@ -19,14 +19,18 @@ public class ParseApplication extends Application {
 
         ParseObject.registerSubclass(Ride.class);
 
+        ParseCrashReporting.enable(this);
+
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
 
         Parse.initialize(this, "D45GKUfUQVf7NrWWnU2elwzKjtiqxMUrghnKWI4f", "OdInxU5E4mgg4SkrQgw8C8PVLbH9ToIxwiyjv381");
 
+        ParseUser.enableAutomaticUser();
+
         ParseFacebookUtils.initialize(this);
 
-        ParseCrashReporting.enable(this);
+
 
 
     }
