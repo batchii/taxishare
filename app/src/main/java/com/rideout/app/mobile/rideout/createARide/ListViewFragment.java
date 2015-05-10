@@ -12,6 +12,8 @@ package com.rideout.app.mobile.rideout.createARide;
         import android.os.AsyncTask;
         import android.os.Bundle;
         import android.support.v4.app.DialogFragment;
+        import android.support.v4.app.Fragment;
+        import android.support.v4.app.FragmentManager;
         import android.support.v4.app.ListFragment;
         import android.text.Editable;
         import android.text.TextWatcher;
@@ -30,6 +32,7 @@ package com.rideout.app.mobile.rideout.createARide;
         import com.parse.ParseGeoPoint;
         import com.parse.ParseObject;
         import com.parse.ParseUser;
+        import com.rideout.app.mobile.rideout.MainActivity.AvailableRidesFragment;
         import com.rideout.app.mobile.rideout.R;
         import com.rideout.app.mobile.rideout.Ride;
         import com.rideout.app.mobile.rideout.myrides.MyRides;
@@ -222,6 +225,12 @@ public class ListViewFragment extends ListFragment {
                 ride.addRider(user);
                 ride.saveInBackground();
 */
+
+                /*FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                Fragment fragment = new AvailableRidesFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();*/
                 Intent intent = new Intent(getActivity(), MyRides.class);
                 startActivity(intent);
                 break;
