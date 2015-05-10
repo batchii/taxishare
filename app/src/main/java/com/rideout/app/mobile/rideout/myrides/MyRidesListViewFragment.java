@@ -17,12 +17,15 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.rideout.app.mobile.rideout.R;
 import com.rideout.app.mobile.rideout.Ride;
 import com.rideout.app.mobile.rideout.rideDetails.RideDetails;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -41,7 +44,10 @@ public class MyRidesListViewFragment extends ListFragment {
         adapter = new MyRidesArrayAdapter(getActivity(), mItems);
         setListAdapter(adapter);
 
+        ParseUser user = ParseUser.getCurrentUser();
+
         ParseQuery<Ride> query = ParseQuery.getQuery("Ride");
+        query.whereEqualTo("riders", user);
         query.findInBackground(new FindCallback<Ride>() {
             private ArrayList<RideItem> temp = new ArrayList<RideItem>();
             public void done(List<Ride> rideList, ParseException e) {
@@ -49,9 +55,26 @@ public class MyRidesListViewFragment extends ListFragment {
                     Log.d("score", "Retrieved " + rideList.size() + " rides");
                     for (int i = 0; i < rideList.size(); i++) {
                         Ride r = rideList.get(i);
+
+                        //Time and date verification, otherwise don't show and delete from db
+                        Date currDate = new Date();
+                        long curr = currDate.getTime();
+                        if ((curr > r.getRideDate().getTime()) && (curr > r.getRideTime().getTime())) {
+                            r.deleteInBackground();
+                            continue;
+                        }
+
                         String num = "" + r.getRiders().size();
                         String title = r.getStartLocation() + " -> " + r.getEndLocation();
-                        String description = r.getRideTime() + " on " + r.getRideDate();
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
+                        String formattedTime = sdf.format(r.getRideTime());
+
+                        SimpleDateFormat ddf = new SimpleDateFormat("dd-MM-yyyy");
+                        String formattedDate = ddf.format(r.getRideDate());
+
+
+                        String description = formattedTime + " on " + formattedDate;
                         Log.d("NUM", "Num Riders: " + r.getRiders().size());
                         Log.d("TIME", "Ride Time: " + r.getRideTime());
                         Log.d("DATE", "Ride Date: " + r.getRideDate());

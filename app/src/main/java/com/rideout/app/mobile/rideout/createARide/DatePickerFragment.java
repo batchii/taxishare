@@ -35,7 +35,7 @@ public class DatePickerFragment extends DialogFragment
         String formattedDate = sdf.format(c.getTime());
 
         Intent i = new Intent();
-        i.putExtra("selectedDate",formattedDate);
+        i.putExtra("selectedDate",c); //Changed from formattedDate to c
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
     }
 

@@ -47,7 +47,7 @@ public class TimePickerFragment extends DialogFragment
             String formattedTime = sdf.format(currentTime.getTime());
 
         Intent i = new Intent();
-        i.putExtra("selectedTime",formattedTime);
+        i.putExtra("selectedTime",currentTime); //changed from formattedTime to currentTime
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
     }
 }
