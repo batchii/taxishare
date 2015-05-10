@@ -92,7 +92,7 @@ public class ListViewFragment extends ListFragment {
         mItems.add(new ListViewItem(new IconDrawable(this.getActivity(), Iconify.IconValue.fa_map_marker).actionBarSize(), getString(R.string.pickup), getString(R.string.select_pickup)));
         mItems.add(new ListViewItem(new IconDrawable(this.getActivity(), Iconify.IconValue.fa_taxi).actionBarSize(), getString(R.string.dropoff), getString(R.string.select_dropoff)));
         mItems.add(new ListViewItem(new IconDrawable(this.getActivity(), Iconify.IconValue.fa_pencil_square).actionBarSize(),getString(R.string.notes), getString(R.string.notes_description)));
-        mItems.add(new ListViewItem(new IconDrawable(this.getActivity(), Iconify.IconValue.fa_check).actionBarSize().colorRes(R.color.base_orange), getString(R.string.create_ride), getString(R.string.create_ride_details)));
+        mItems.add(new ListViewItem(new IconDrawable(this.getActivity(), Iconify.IconValue.fa_check).actionBarSize().colorRes(R.color.green_primary), getString(R.string.create_ride), getString(R.string.create_ride_details)));
         // initialize and set the list adapter
         adapter = new MySimpleArrayAdapter(getActivity(), mItems);
         //setListAdapter(new MySimpleArrayAdapter(getActivity(), mItems));

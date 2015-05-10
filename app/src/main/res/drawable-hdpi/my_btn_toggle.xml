@@ -3,5 +3,8 @@
     <item android:state_checked="false"
         android:drawable="@color/red" />
     <item android:state_checked="true"
-        android:drawable="@color/green"/>
+        android:drawable="@color/green_primary"/>
+
+
+
 </selector>

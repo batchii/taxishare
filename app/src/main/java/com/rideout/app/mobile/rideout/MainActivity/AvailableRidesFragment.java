@@ -109,6 +109,7 @@ public class AvailableRidesFragment extends ListFragment {
         //mItems.add(new RideItem(getString(R.string.num_riders), getString(R.string.time), getString(R.string.ride_name)));
         myPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+<<<<<<< HEAD
         int visited = myPrefs.getInt("visited", 0);
         if (visited == 1) {
             String time = "6:00 PM - May 1, 2015";

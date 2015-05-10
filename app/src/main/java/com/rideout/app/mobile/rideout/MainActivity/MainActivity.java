@@ -2,7 +2,9 @@ package com.rideout.app.mobile.rideout.MainActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -22,13 +24,14 @@ import android.widget.Toast;
 import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
 import com.rideout.app.mobile.rideout.R;
 import com.rideout.app.mobile.rideout.createARide.CreateARide;
+import com.rideout.app.mobile.rideout.createARide.ListViewFragment;
 import com.rideout.app.mobile.rideout.myrides.MyRides;
 import com.rideout.app.mobile.rideout.myrides.MyRidesListViewFragment;
 import com.rideout.app.mobile.rideout.view.SigninActivity;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, SwipeRefreshLayout.OnRefreshListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -39,11 +42,12 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-
+    private SwipeRefreshLayout swipeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -55,6 +59,15 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         //Replace main view with list view found in AvailableRidesFragment
+
+
+
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -70,6 +83,8 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = null;
+
         //fragmentManager.beginTransaction()
                // .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 //.commit();
@@ -77,23 +92,26 @@ public class MainActivity extends ActionBarActivity
             case 0:
                 break;
             case 1:
-                Intent  myRides = new Intent(this, MyRides.class);
-                startActivity(myRides);
+                fragment = new MyRidesListViewFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
                 break;
             case 2:
                 Intent signIn = new Intent(this, SigninActivity.class);
                 startActivity(signIn);
                 break;
             case 3:
-                Intent createRide = new Intent(this, CreateARide.class);
-                startActivity(createRide);
+                fragment = new ListViewFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
+                /*Intent createRide = new Intent(this, CreateARide.class);
+                startActivity(createRide);*/
                 break;
         }
 
-       /* FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();*/
+
     }
 
     public void onSectionAttached(int number) {
@@ -147,6 +165,15 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                swipeLayout.setRefreshing(false);
+            }
+        }, 5000);
     }
 
     /**

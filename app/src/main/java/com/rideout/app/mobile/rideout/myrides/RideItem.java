@@ -12,7 +12,7 @@ public class RideItem {
     public final String description;  // the text for the ListView item description
 
     public RideItem(String numRiders, String title, String description) {
-        this.numberRiders = numRiders;
+        this.numberRiders = numRiders + " Riders";
         this.title = title;
         this.description = description;
     }
