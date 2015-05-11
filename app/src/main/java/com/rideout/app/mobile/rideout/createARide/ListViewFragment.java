@@ -211,8 +211,7 @@ public class ListViewFragment extends ListFragment {
                         .commit();
 
                 NavigationDrawerFragment.mDrawerListView.setItemChecked(1, true);
-                getActivity().getActionBar().setTitle(R.string.title_activity_my_rides);
-
+                ((MainActivity) getActivity()).setActionBarTitle(getString(R.string.title_activity_my_rides));
                 break;
         }
 
