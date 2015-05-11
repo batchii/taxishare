@@ -154,7 +154,7 @@ public class ListViewFragment extends ListFragment {
                 long curr = currDate.getTime();
                 final Ride ride = new Ride();
                 if (resultDate != null) {
-                    if (curr > resultDate.getTime()) {
+                    if ((curr > resultDate.getTime()) && (curr > resultTime.getTime())) {
                         Toast.makeText(context, "Invalid Date/Time", Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -164,7 +164,7 @@ public class ListViewFragment extends ListFragment {
                     return;
                 }
                 if (resultTime != null) {
-                    if (curr > resultTime.getTime()) {
+                    if ((curr > resultDate.getTime()) && (curr > resultTime.getTime())) {
                         Toast.makeText(context, "Invalid Date/Time", Toast.LENGTH_LONG).show();
                         return;
                     }
