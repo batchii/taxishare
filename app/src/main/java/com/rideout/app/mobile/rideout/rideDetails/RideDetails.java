@@ -16,9 +16,17 @@ public class RideDetails extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_details);
+
+        String rideId = getIntent().getStringExtra("rideid");
+
+        DetailItemFragment details = new DetailItemFragment();
+        Bundle args = new Bundle();
+        args.putString("ride", rideId);
+        details.setArguments(args);
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the container with the new fragment
-        ft.replace(R.id.detail_fragment, new DetailItemFragment());
+        ft.replace(R.id.detail_fragment, details);
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Execute the changes specified
         ft.commit();
