@@ -33,7 +33,7 @@
         android:onClick="login"
         android:text="@string/login"
         bootstrap:bb_icon_right="fa-sign-in"
-        bootstrap:bb_type="primary" />
+        bootstrap:bb_type="success"/>
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/loginCreateAccount"
