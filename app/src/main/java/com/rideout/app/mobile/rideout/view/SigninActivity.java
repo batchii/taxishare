@@ -25,7 +25,7 @@ import java.util.List;
 
 public class SigninActivity extends ActionBarActivity {
 
-    private ToggleButton toggleBtn1, toggleBtn2;
+    private Switch switchBtn1, switchBtn2;
     private PopupMenu popupBefore;
     private Spinner spinner;
 
@@ -44,7 +44,7 @@ public class SigninActivity extends ActionBarActivity {
         setContentView(R.layout.activity_signin);
         addListenerOnToggleButton();
 
-        popupBefore = new PopupMenu(this, findViewById(R.id.btnChangeImage));
+        popupBefore = new PopupMenu(this, findViewById(R.id.imageView1));
         popupBefore.getMenu().add(Menu.NONE, MENU_CAMERA, Menu.NONE, "Take a Picture");
         popupBefore.getMenu().add(Menu.NONE, MENU_GALLERY, Menu.NONE, "Choose From Gallery");
         beforePic = (ImageView) findViewById(R.id.imageView1);
@@ -66,7 +66,7 @@ public class SigninActivity extends ActionBarActivity {
                 return false;
             }
         });
-        findViewById(R.id.btnChangeImage).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imageView1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popupBefore.show();
@@ -85,10 +85,10 @@ public class SigninActivity extends ActionBarActivity {
 
 
     private void addListenerOnToggleButton() {
-        toggleBtn1 = (ToggleButton) findViewById(R.id.allow_Contact);
-        toggleBtn2 = (ToggleButton) findViewById(R.id.text_social);
-        toggleBtn1.setChecked(false);
-        toggleBtn2.setChecked(false);
+        switchBtn1 = (Switch) findViewById(R.id.allow_Contact);
+        switchBtn2 = (Switch) findViewById(R.id.text_social);
+        switchBtn1.setChecked(false);
+        switchBtn2.setChecked(false);
     }
 
     @Override

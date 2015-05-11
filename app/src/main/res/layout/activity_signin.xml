@@ -18,15 +18,15 @@
 
         <ImageView
             android:id="@+id/imageView1"
+            android:maxHeight="64dp"
+            android:maxWidth="64dp"
+            android:scaleType="centerCrop"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_drawer" />
-
-        <Button
-            android:id="@+id/btnChangeImage"
-            android:layout_width="154dp"
-            android:layout_height="141dp"
-            android:text="Change Image" />
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_drawer"/>
 
     </LinearLayout>
 
@@ -45,7 +45,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:gravity = "center"/>
-        <ToggleButton
+        <Switch
             android:id="@+id/allow_Contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:gravity = "center"/>
-        <ToggleButton
+        <Switch
             android:id="@+id/text_social"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
