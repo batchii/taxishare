@@ -139,7 +139,7 @@ public class MyRidesListViewFragment extends ListFragment {
         startActivity(rideDetails);
 
         // do something
-        Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
     }
 
     private List<Ride> sort(List<Ride> rides) {

@@ -28,10 +28,12 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.rideout.app.mobile.rideout.MainActivity.MainActivity;
 import com.rideout.app.mobile.rideout.MapsActivity;
 import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
 import com.rideout.app.mobile.rideout.R;
 import com.rideout.app.mobile.rideout.Ride;
+import com.rideout.app.mobile.rideout.myrides.MyRides;
 import com.rideout.app.mobile.rideout.myrides.MyRidesListViewFragment;
 
 
@@ -65,7 +67,8 @@ public class DetailItemFragment extends ListFragment {
 
     private String rideId;
 
-    ParseUser user = ParseUser.getCurrentUser();
+    //private Ride current;
+    //ParseUser user = ParseUser.getCurrentUser();
 
 
     @Override
@@ -123,6 +126,44 @@ public class DetailItemFragment extends ListFragment {
                 break;
             case 6:
                 final Context context = getActivity();
+
+                if (item.description.equals("Join Ride")) {
+                    ParseQuery<Ride> query = ParseQuery.getQuery("Ride");
+                    query.getInBackground(rideId, new GetCallback<Ride>() {
+                        public void done(Ride object, ParseException e) {
+                            if (e == null) {
+                                ParseUser user = ParseUser.getCurrentUser();
+                                object.addRider(user);
+                                object.saveInBackground();
+                                populate(object);
+
+                            } else {
+                                // something went wrong
+                            }
+                        }
+                    });
+                } else {
+                    ParseQuery<Ride> query = ParseQuery.getQuery("Ride");
+                    query.getInBackground(rideId, new GetCallback<Ride>() {
+                        public void done(Ride object, ParseException e) {
+                            if (e == null) {
+                                ParseUser user = ParseUser.getCurrentUser();
+                                object.removeRider(user);
+                                object.saveInBackground();
+                                if (object.getRiders().size() == 0) {
+                                    object.deleteInBackground();
+                                    Intent myRides = new Intent(getActivity(), MainActivity.class);
+                                    startActivity(myRides);
+                                } else {
+                                    populate(object);
+                                }
+                            } else {
+                                // something went wrong
+                            }
+                        }
+                    });
+                }
+
                 //ride.addRider(user);
                 //ride.saveInBackground();
                 break;
@@ -131,7 +172,8 @@ public class DetailItemFragment extends ListFragment {
     }
 
     private void populate(Ride ride) {
-
+        //current = ride;
+        ParseUser user = ParseUser.getCurrentUser();
         rideDate = ride.getRideDate();
         rideTime = ride.getRideTime();
         startLocation = ride.getStartLocation();
@@ -142,7 +184,7 @@ public class DetailItemFragment extends ListFragment {
         SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
         formattedTime = sdf.format(rideTime);
 
-        SimpleDateFormat ddf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat ddf = new SimpleDateFormat("MM-dd-yyyy");
         formattedDate = ddf.format(rideDate);
 
         int counter = 0;
@@ -155,6 +197,14 @@ public class DetailItemFragment extends ListFragment {
                 formattedRiders += u.getString("name") + ", ";
             }
             counter++;
+        }
+
+        if (mItems == null) {
+            Context context = getActivity();
+            CharSequence text = "Data could not be loaded at this time. Please go back and try again";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
 
         mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
@@ -177,7 +227,7 @@ public class DetailItemFragment extends ListFragment {
         mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
                 Iconify.IconValue.fa_users).actionBarSize(),getString(R.string.riders),
                 formattedRiders));
-        if (ride.hasRider(user)) {
+        if (! ride.hasRider(user)) {
             mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
                     Iconify.IconValue.fa_check).actionBarSize(), getString(R.string.join),
                     ""));
