@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
+import com.parse.ParseUser;
+import com.rideout.app.mobile.rideout.Login;
 import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
 import com.rideout.app.mobile.rideout.R;
 import com.rideout.app.mobile.rideout.createARide.CreateARide;
@@ -149,6 +151,7 @@ public class MainActivity extends ActionBarActivity
             restoreActionBar();
             return true;
         }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -166,6 +169,10 @@ public class MainActivity extends ActionBarActivity
             return true;
         }
         else if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            Intent login = new Intent(this, Login.class);
+            startActivity(login);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
