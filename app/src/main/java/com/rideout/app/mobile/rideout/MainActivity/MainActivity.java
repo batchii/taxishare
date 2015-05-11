@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        mTitle = getString(R.string.title_section1);
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -94,24 +94,24 @@ public class MainActivity extends ActionBarActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
+                mTitle = getString(R.string.title_section1);
+
                 break;
             case 1:
                 fragment = new MyRidesListViewFragment();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
+                mTitle = getString(R.string.title_section2);
+
                 break;
             case 2:
-                Intent signIn = new Intent(this, SigninActivity.class);
-                startActivity(signIn);
-                break;
-            case 3:
                 fragment = new ListViewFragment();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
-                /*Intent createRide = new Intent(this, CreateARide.class);
-                startActivity(createRide);*/
+                mTitle = getString(R.string.title_activity_create_aride);
+
                 break;
         }
 
@@ -127,9 +127,6 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-            case 4:
                 mTitle = getString(R.string.title_activity_create_aride);
                 break;
         }
@@ -165,6 +162,13 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent signIn = new Intent(this, SigninActivity.class);
+            startActivity(signIn);
+            return true;
+        }
+        else if (id == R.id.action_next) {
+            Intent next = new Intent(this, CreateARide.class);
+            startActivity(next);
             return true;
         }
 
