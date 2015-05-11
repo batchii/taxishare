@@ -33,9 +33,11 @@ package com.rideout.app.mobile.rideout.createARide;
         import com.parse.ParseObject;
         import com.parse.ParseUser;
         import com.rideout.app.mobile.rideout.MainActivity.AvailableRidesFragment;
+        import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
         import com.rideout.app.mobile.rideout.R;
         import com.rideout.app.mobile.rideout.Ride;
         import com.rideout.app.mobile.rideout.myrides.MyRides;
+        import com.rideout.app.mobile.rideout.myrides.MyRidesListViewFragment;
 
 
         import java.io.BufferedReader;
@@ -144,15 +146,24 @@ public class ListViewFragment extends ListFragment {
                 break;
             case 5:
                 final Context context = getActivity();
-
+                Date currDate = new Date();
+                long curr = currDate.getTime();
                 final Ride ride = new Ride();
                 if (resultDate != null) {
+                    if (curr > resultDate.getTime()) {
+                        Toast.makeText(context, "Invalid Date", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     ride.setRideDate(resultDate);
                 } else {
                     Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (resultTime != null) {
+                    if (curr > resultDate.getTime()) {
+                        Toast.makeText(context, "Invalid Time", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     ride.setRideTime(resultTime);
                 } else {
                     Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
@@ -227,10 +238,11 @@ public class ListViewFragment extends ListFragment {
 */
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                Fragment fragment = new AvailableRidesFragment();
+                Fragment fragment = new MyRidesListViewFragment();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
+
                 //Intent intent = new Intent(getActivity(), MyRides.class);
                 //startActivity(intent);
                 break;
@@ -355,7 +367,6 @@ public class ListViewFragment extends ListFragment {
         AlertDialog alert = ad.create();
         alert.show();
     }
-
 
 
 
