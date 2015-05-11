@@ -30,10 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
 
         <activity
             android:name=".createARide.CreateARide"
@@ -62,8 +58,13 @@
             android:label="@string/title_activity_my_rides" >
 
         </activity>
-        <activity android:name=".view.SigninActivity"
-            android:label="@string/title_activity_signin" >
+        <activity android:name=".view.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+
+        </activity>
+        <activity
+            android:name=".SignUp"
+            android:label="@string/title_activity_sign_up" >
 
         </activity>
         <activity android:name=".rideDetails.RideDetails"

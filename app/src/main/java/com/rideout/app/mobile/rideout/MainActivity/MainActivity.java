@@ -10,24 +10,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.AdapterView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
 import com.rideout.app.mobile.rideout.R;
 import com.rideout.app.mobile.rideout.createARide.CreateARide;
 import com.rideout.app.mobile.rideout.createARide.ListViewFragment;
-import com.rideout.app.mobile.rideout.myrides.MyRides;
 import com.rideout.app.mobile.rideout.myrides.MyRidesListViewFragment;
-import com.rideout.app.mobile.rideout.view.SigninActivity;
+import com.rideout.app.mobile.rideout.view.SettingsActivity;
 
 
 public class MainActivity extends ActionBarActivity
@@ -162,7 +157,7 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent signIn = new Intent(this, SigninActivity.class);
+            Intent signIn = new Intent(this, SettingsActivity.class);
             startActivity(signIn);
             return true;
         }
