@@ -33,9 +33,12 @@ package com.rideout.app.mobile.rideout.createARide;
         import com.parse.ParseObject;
         import com.parse.ParseUser;
         import com.rideout.app.mobile.rideout.MainActivity.AvailableRidesFragment;
+        import com.rideout.app.mobile.rideout.MainActivity.MainActivity;
+        import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
         import com.rideout.app.mobile.rideout.R;
         import com.rideout.app.mobile.rideout.Ride;
         import com.rideout.app.mobile.rideout.myrides.MyRides;
+        import com.rideout.app.mobile.rideout.myrides.MyRidesListViewFragment;
 
 
         import java.io.BufferedReader;
@@ -227,10 +230,12 @@ public class ListViewFragment extends ListFragment {
 */
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                Fragment fragment = new AvailableRidesFragment();
+                Fragment fragment = new MyRidesListViewFragment();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
+
+                NavigationDrawerFragment.mDrawerListView.setItemChecked(1, true);
                 //Intent intent = new Intent(getActivity(), MyRides.class);
                 //startActivity(intent);
                 break;
