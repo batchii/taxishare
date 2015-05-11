@@ -10,26 +10,34 @@
     tools:context="com.rideout.app.mobile.rideout.view.SettingsActivity"
     android:weightSum="1"
     >
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal" >
+        android:gravity="center"
+        android:padding="5dp" >
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:maxHeight="64dp"
-            android:maxWidth="64dp"
-            android:scaleType="centerCrop"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="6dp"
-            android:src="@drawable/ic_drawer"/>
+        <Button
+            android:id="@+id/btnSelectPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Photo" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/camera" />
+    </LinearLayout>
+
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

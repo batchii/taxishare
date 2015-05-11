@@ -1,9 +1,11 @@
 package com.rideout.app.mobile.rideout.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,13 +23,12 @@ public class SettingsActivity extends ActionBarActivity {
     private Switch switchBtn1, switchBtn2;
     private PopupMenu popupBefore;
     private Spinner spinner;
+    private static final String[] paths = {"5 mins", "10 mins", "15 mins"};
 
     static final int CAPTURE_BEFORE = 11;
     static final int SELECT_BEFORE = 12;
     static final int MENU_CAMERA = Menu.FIRST;
     static final int MENU_GALLERY = Menu.FIRST + 1;
-
-    private static final String[] paths = {"5 mins", "10 mins", "15 mins"};
 
     ImageView beforePic;
 
@@ -77,6 +78,7 @@ public class SettingsActivity extends ActionBarActivity {
     }
 
 
+
     private void addListenerOnToggleButton() {
         switchBtn1 = (Switch) findViewById(R.id.allow_Contact);
         switchBtn2 = (Switch) findViewById(R.id.text_social);
@@ -87,7 +89,7 @@ public class SettingsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_signin, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -99,7 +101,7 @@ public class SettingsActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
             return true;
         }
 
