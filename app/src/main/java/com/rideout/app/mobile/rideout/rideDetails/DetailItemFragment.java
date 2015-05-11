@@ -133,10 +133,12 @@ public class DetailItemFragment extends ListFragment {
 
                 if (item.title.equals("Join Ride")) {
                     Log.d("TESTING", "Entered join method.");
+
                     ParseQuery<Ride> query = ParseQuery.getQuery("Ride");
                     query.getInBackground(rideId, new GetCallback<Ride>() {
                         public void done(Ride object, ParseException e) {
                             if (e == null) {
+
 
                                 ParseUser user = ParseUser.getCurrentUser();
 
@@ -182,6 +184,7 @@ public class DetailItemFragment extends ListFragment {
                                     adapter.notifyDataSetChanged();
                                     Intent myRides = new Intent(getActivity(), MainActivity.class);
                                     startActivity(myRides);
+
                                 }
                             } else {
                                 // something went wrong
@@ -200,7 +203,7 @@ public class DetailItemFragment extends ListFragment {
     private void populate(Ride ride) {
         //current = ride;
         ParseUser user = ParseUser.getCurrentUser();
-        Log.d("ADDED USER", "Name: " + user.getString("name"));
+
         rideDate = ride.getRideDate();
         rideTime = ride.getRideTime();
         startLocation = ride.getStartLocation();
@@ -239,6 +242,14 @@ public class DetailItemFragment extends ListFragment {
             }
             counter++;
         }*/
+
+        if (mItems == null) {
+            Context context = getActivity();
+            CharSequence text = "Data could not be loaded at this time. Please go back and try again";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
 
         if (mItems == null) {
             Context context = getActivity();

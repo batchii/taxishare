@@ -6,6 +6,30 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/viewImage"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:padding="10dp"
+            />
+        <Button
+            android:id="@+id/btnSelectPhoto"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:background="@drawable/camera"/>
+    </LinearLayout>
+
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/name"
         android:layout_width="300dp"
@@ -36,7 +60,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="@dimen/large_margin"
         android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"/>
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/createAccountButton"
