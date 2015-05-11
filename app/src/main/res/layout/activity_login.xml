@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/loginUsername"
+        android:layout_width="@dimen/edit_text_width"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin"
+        android:width="@dimen/edit_text_width"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/black" />
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/loginPassword"
+        android:layout_width="@dimen/edit_text_width"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/large_margin"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:textColor="@color/black" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/loginLogin"
+        android:layout_width="@dimen/edit_text_width"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin"
+        android:onClick="login"
+        android:text="@string/login"
+        bootstrap:bb_icon_right="fa-sign-in"
+        bootstrap:bb_type="primary" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/loginCreateAccount"
+        android:layout_width="@dimen/edit_text_width"
+        android:layout_height="wrap_content"
+        android:width="@dimen/edit_text_width"
+        android:onClick="signUp"
+        android:text="@string/sign_up"
+        bootstrap:bb_icon_right="fa-pencil-square-o"
+        bootstrap:bb_type="default" />
+
+</LinearLayout>

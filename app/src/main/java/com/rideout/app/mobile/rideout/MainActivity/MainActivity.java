@@ -130,11 +130,15 @@ public class MainActivity extends ActionBarActivity
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
 
-
+    public void setActionBarTitle(String title){
+        getSupportActionBar().setTitle(title);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
@@ -161,12 +165,6 @@ public class MainActivity extends ActionBarActivity
             startActivity(signIn);
             return true;
         }
-        else if (id == R.id.action_next) {
-            Intent next = new Intent(this, CreateARide.class);
-            startActivity(next);
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -1,5 +1,6 @@
 package com.rideout.app.mobile.rideout.createARide;
 
+        import android.app.ActionBar;
         import android.app.Activity;
         import android.app.AlertDialog;
         import android.content.Context;
@@ -203,43 +204,6 @@ public class ListViewFragment extends ListFragment {
                 ride.saveInBackground();
 
 
-                /*ParseObject ride = new ParseObject("RideObject");
-                ride.put("date", resultDate);
-                ride.put("time", resultTime);
-                ride.put("start", pickUpLoc.toString());
-                ride.put("end", dropOffLoc.toString());
-                ride.saveInBackground();*/
-               /* Toast.makeText(context, "Entered onClick", Toast.LENGTH_LONG).show();
-                final Ride ride = new Ride();
-                if (!resultDate.equals(null)) {
-                    ride.setRideDate(resultDate);
-                } else {
-                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
-                }
-                if (!resultTime.equals(null)) {
-                    ride.setRideTime(resultTime);
-                } else {
-                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
-                }
-                if (pickUpLoc != null) {
-                    ParseGeoPoint start = new ParseGeoPoint(pickUpLoc.latitude, pickUpLoc.longitude);
-                    ride.setStartLocation(start);
-                } else {
-                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
-                }
-                if (dropOffLoc != null) {
-                    ParseGeoPoint end = new ParseGeoPoint(dropOffLoc.latitude, dropOffLoc.longitude);
-                    ride.setEndLocation(end);
-                } else {
-                    Toast.makeText(context, "Fields Incomplete", Toast.LENGTH_LONG).show();
-                }
-                Toast.makeText(context, "Entered primary information", Toast.LENGTH_LONG).show();
-                //Add one for notes
-                ParseUser user = ParseUser.getCurrentUser();
-                ride.addRider(user);
-                ride.saveInBackground();
-*/
-
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Fragment fragment = new MyRidesListViewFragment();
                 fragmentManager.beginTransaction()
@@ -247,9 +211,7 @@ public class ListViewFragment extends ListFragment {
                         .commit();
 
                 NavigationDrawerFragment.mDrawerListView.setItemChecked(1, true);
-
-                //Intent intent = new Intent(getActivity(), MyRides.class);
-                //startActivity(intent);
+                ((MainActivity) getActivity()).setActionBarTitle(getString(R.string.title_activity_my_rides));
                 break;
         }
 
