@@ -6,14 +6,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
 import com.rideout.app.mobile.rideout.R;
 import com.rideout.app.mobile.rideout.createARide.CreateARide;
-import com.rideout.app.mobile.rideout.view.SigninActivity;
+import com.rideout.app.mobile.rideout.view.SettingsActivity;
 
 public class MyRides extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -84,7 +83,7 @@ public class MyRides extends ActionBarActivity implements NavigationDrawerFragme
                 startActivity(myRides);
                 break;
             case 2:
-                Intent signIn = new Intent(this, SigninActivity.class);
+                Intent signIn = new Intent(this, SettingsActivity.class);
                 startActivity(signIn);
                 break;
             case 3:

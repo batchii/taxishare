@@ -30,4 +30,6 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.joanzapata.android:android-iconify:1.0.9'
+    compile 'com.beardedhen:androidbootstrap:+'
+
 }
