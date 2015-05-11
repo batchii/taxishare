@@ -5,9 +5,4 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item android:id="@+id/action_next"
-        tools:context=".MainActivity"
-        android:title="@string/CreateAride"
-        app:showAsAction="ifRoom"/>
-
 </menu>

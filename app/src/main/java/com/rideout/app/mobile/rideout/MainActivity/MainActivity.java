@@ -163,12 +163,6 @@ public class MainActivity extends ActionBarActivity
             startActivity(signIn);
             return true;
         }
-        else if (id == R.id.action_next) {
-            Intent next = new Intent(this, CreateARide.class);
-            startActivity(next);
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
