@@ -72,7 +72,7 @@ public class MyRidesListViewFragment extends ListFragment {
                         SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
                         String formattedTime = sdf.format(r.getRideTime());
 
-                        SimpleDateFormat ddf = new SimpleDateFormat("dd-MM-yyyy");
+                        SimpleDateFormat ddf = new SimpleDateFormat("MM-dd-yyyy");
                         String formattedDate = ddf.format(r.getRideDate());
 
 
