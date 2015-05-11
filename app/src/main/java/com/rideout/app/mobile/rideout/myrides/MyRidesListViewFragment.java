@@ -25,6 +25,7 @@ import com.rideout.app.mobile.rideout.rideDetails.RideDetails;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class MyRidesListViewFragment extends ListFragment {
             public void done(List<Ride> rideList, ParseException e) {
                 if (e == null) {
                     Log.d("score", "Retrieved " + rideList.size() + " rides");
+                    rideList = sort(rideList);
                     for (int i = 0; i < rideList.size(); i++) {
                         Ride r = rideList.get(i);
 
@@ -136,6 +138,73 @@ public class MyRidesListViewFragment extends ListFragment {
 
         // do something
         Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
+    }
+
+    private List<Ride> sort(List<Ride> rides) {
+        // just return if the array list is null
+        if (rides == null)
+            return rides;
+
+        // just return if the array list is empty or only has a single element
+        if (rides.size() == 0 || rides.size() == 1)
+            return rides;
+
+        // declare an int variable to hold value of index at which the element
+        // has the smallest value
+        int smallestIndex;
+
+        // declare an int variable to hold the smallest value for each iteration
+        // of the outer loop
+        Ride smallest;
+
+        // for each index in the array list
+        for (int curIndex = 0; curIndex < rides.size(); curIndex++) {
+
+			/* find the index at which the element has smallest value */
+            // initialize variables
+            smallest = rides.get(curIndex);
+            smallestIndex = curIndex;
+
+            for (int i = curIndex + 1; i < rides.size(); i++) {
+                Calendar c1 = Calendar.getInstance();
+                Calendar c2 = Calendar.getInstance();
+                c1.setTime(rides.get(i).getRideDate());
+                c2.setTime(rides.get(i).getRideTime());
+                c1.set(Calendar.HOUR_OF_DAY, c2.get(Calendar.HOUR_OF_DAY));
+                c1.set(Calendar.MINUTE, c2.get(Calendar.MINUTE));
+                Date comp = c1.getTime();
+
+                Calendar s1 = Calendar.getInstance();
+                Calendar s2 = Calendar.getInstance();
+                s1.setTime(smallest.getRideDate());
+                s2.setTime(smallest.getRideTime());
+                s1.set(Calendar.HOUR_OF_DAY, s2.get(Calendar.HOUR_OF_DAY));
+                s1.set(Calendar.MINUTE, s2.get(Calendar.MINUTE));
+                Date small = s1.getTime();
+
+
+
+
+                if ((small.getTime() > comp.getTime())){
+                    // update smallest
+                    smallest = rides.get(i);
+                    smallestIndex = i;
+                }
+            }
+
+			/* swap the value */
+            // do nothing if the curIndex has the smallest value
+            if (smallestIndex == curIndex)
+                ;
+                // swap values otherwise
+            else {
+                Ride temp = rides.get(curIndex);
+                rides.set(curIndex, rides.get(smallestIndex));
+                rides.set(smallestIndex, temp);
+            }
+
+        }
+        return rides;
     }
 
 }
