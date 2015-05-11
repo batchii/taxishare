@@ -27,6 +27,9 @@
     <string name="select_dropoff">Select Drop Off Location</string>
     <string name="notes">Notes</string>
     <string name="notes_description">Any additional notes go here</string>
+    <string name="riders">Riders</string>
+    <string name="join">Join Ride</string>
+    <string name="leave">Leave Ride</string>
 
 
     <string name="create_ride">Let\'s Ride!</string>

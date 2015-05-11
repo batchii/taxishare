@@ -9,21 +9,38 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.joanzapata.android.iconify.IconDrawable;
 import com.joanzapata.android.iconify.Iconify;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.rideout.app.mobile.rideout.MapsActivity;
+import com.rideout.app.mobile.rideout.NavigationDrawerFragment;
 import com.rideout.app.mobile.rideout.R;
+import com.rideout.app.mobile.rideout.Ride;
+import com.rideout.app.mobile.rideout.myrides.MyRides;
+import com.rideout.app.mobile.rideout.myrides.MyRidesListViewFragment;
 
 
+import com.parse.ParseException;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,36 +51,51 @@ public class DetailItemFragment extends ListFragment {
     private static final int PICKUP_CODE = 3;
     private static final int DROPOFF_CODE = 4;
 
-    private List<DetailItem> mItems;
+    private Date rideDate;
+    private String formattedDate;
+    private Date rideTime;
+    private String formattedTime;
+    private String startLocation;
+    private String endLocation;
+    private String notes;
+    private ArrayList<ParseUser> riders;
+    private String formattedRiders = "";
+
+    private List<DetailItem> mItems = new ArrayList<>();
+    private DetailArrayAdapter adapter;
+
+    private String rideId;
+
+    //private Ride current;
+    //ParseUser user = ParseUser.getCurrentUser();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initialize the items list
-        mItems = new ArrayList<>();
-        Resources resources = getResources();
-        Drawable calendar = new IconDrawable(this.getActivity(),
-                Iconify.IconValue.fa_calendar_o).actionBarSize();
-        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
-                Iconify.IconValue.fa_clock_o).actionBarSize(), getString(R.string.time),
-                "6:00 PM", null, null));
-        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
-                Iconify.IconValue.fa_calendar_o).actionBarSize(), getString(R.string.date),
-                "May 1, 2015", null, null));
-        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
-                Iconify.IconValue.fa_map_marker).actionBarSize(), getString(R.string.pickup),
-                "Johns Hopkins University", null, null));
-        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
-                Iconify.IconValue.fa_taxi).actionBarSize(), getString(R.string.dropoff),
-                "BWI", null, null));
-        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
-                Iconify.IconValue.fa_pencil_square).actionBarSize(),getString(R.string.notes),
-                "None", null, null));
-        // initialize and set the list adapter
-        setListAdapter(new DetailArrayAdapter(getActivity(), mItems));
-    }
+        //mItems = new ArrayList<>();
 
+        Bundle args = getArguments();
+        rideId = args.getString("ride");
+
+        ParseQuery<Ride> query = ParseQuery.getQuery("Ride");
+        query.getInBackground(rideId, new GetCallback<Ride>() {
+            public void done(Ride object, ParseException e) {
+                if (e == null) {
+                    populate(object);
+
+                } else {
+                    // something went wrong
+                }
+            }
+        });
+
+        // initialize and set the list adapter
+        adapter = new DetailArrayAdapter(getActivity(), mItems);
+        //setListAdapter(new MySimpleArrayAdapter(getActivity(), mItems));
+        setListAdapter(adapter);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -76,34 +108,133 @@ public class DetailItemFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // retrieve theListView item
         DetailItem item = mItems.get(position);
+
         switch(position){
             case 0:
-                //DialogFragment timePicker = new TimePickerFragment();
-                //timePicker.setTargetFragment(this, TIMEPICKER_FRAGMENT);
-                //timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
                 break;
             case 1:
-                //DialogFragment datePicker = new DatePickerFragment();
-                //datePicker.setTargetFragment(this, DATEPICKER_FRAGMENT);
-
-                //datePicker.show(getFragmentManager().beginTransaction(), "datePicker");
                 break;
             case 2:
-                /*Intent mapPickUpIntent = new Intent(getActivity(), MapsActivity.class);
-                mapPickUpIntent.putExtra("LOCATION_TYPE", PICKUP_CODE);
-                startActivityForResult(mapPickUpIntent,PICKUP_CODE);
-*/
                 break;
             case 3:
-                /*Intent mapDropOffIntent = new Intent(getActivity(), MapsActivity.class);
-                mapDropOffIntent.putExtra("LOCATION_TYPE", DROPOFF_CODE);
-                startActivityForResult(mapDropOffIntent,DROPOFF_CODE);*/
                 break;
             case 4:
-                //  showNoteDialog();
+                break;
+            case 5:
+                // open riders activity
+                break;
+            case 6:
+                final Context context = getActivity();
+
+                if (item.description.equals("Join Ride")) {
+                    ParseQuery<Ride> query = ParseQuery.getQuery("Ride");
+                    query.getInBackground(rideId, new GetCallback<Ride>() {
+                        public void done(Ride object, ParseException e) {
+                            if (e == null) {
+                                ParseUser user = ParseUser.getCurrentUser();
+                                object.addRider(user);
+                                object.saveInBackground();
+                                populate(object);
+
+                            } else {
+                                // something went wrong
+                            }
+                        }
+                    });
+                } else {
+                    ParseQuery<Ride> query = ParseQuery.getQuery("Ride");
+                    query.getInBackground(rideId, new GetCallback<Ride>() {
+                        public void done(Ride object, ParseException e) {
+                            if (e == null) {
+                                ParseUser user = ParseUser.getCurrentUser();
+                                object.removeRider(user);
+                                object.saveInBackground();
+                                if (object.getRiders().size() == 0) {
+                                    object.deleteInBackground();
+                                    Intent myRides = new Intent(getActivity(), MyRides.class);
+                                    startActivity(myRides);
+                                } else {
+                                    populate(object);
+                                }
+                            } else {
+                                // something went wrong
+                            }
+                        }
+                    });
+                }
+
+                //ride.addRider(user);
+                //ride.saveInBackground();
                 break;
         }
 
+    }
+
+    private void populate(Ride ride) {
+        //current = ride;
+        ParseUser user = ParseUser.getCurrentUser();
+        rideDate = ride.getRideDate();
+        rideTime = ride.getRideTime();
+        startLocation = ride.getStartLocation();
+        endLocation = ride.getEndLocation();
+        notes = ride.getNotes();
+        riders = ride.getRiders();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
+        formattedTime = sdf.format(rideTime);
+
+        SimpleDateFormat ddf = new SimpleDateFormat("MM-dd-yyyy");
+        formattedDate = ddf.format(rideDate);
+
+        int counter = 0;
+
+        for (ParseUser u : riders) {
+            // format rider names here
+            if (counter == riders.size() - 1) {
+                formattedRiders += u.getString("name");
+            } else {
+                formattedRiders += u.getString("name") + ", ";
+            }
+            counter++;
+        }
+
+        if (mItems == null) {
+            Context context = getActivity();
+            CharSequence text = "Data could not be loaded at this time. Please go back and try again";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
+        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                Iconify.IconValue.fa_clock_o).actionBarSize(), getString(R.string.time),
+                formattedTime));
+        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                Iconify.IconValue.fa_calendar_o).actionBarSize(), getString(R.string.date),
+                formattedDate));
+        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                Iconify.IconValue.fa_map_marker).actionBarSize(), getString(R.string.pickup),
+                startLocation));
+        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                Iconify.IconValue.fa_taxi).actionBarSize(), getString(R.string.dropoff),
+                endLocation));
+        if (notes != "") {
+            mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                    Iconify.IconValue.fa_pencil_square).actionBarSize(), getString(R.string.notes),
+                    notes));
+        }
+        mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                Iconify.IconValue.fa_users).actionBarSize(),getString(R.string.riders),
+                formattedRiders));
+        if (! ride.hasRider(user)) {
+            mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                    Iconify.IconValue.fa_check).actionBarSize(), getString(R.string.join),
+                    ""));
+        } else {
+            mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                    Iconify.IconValue.fa_times).actionBarSize(), getString(R.string.leave),
+                    ""));
+        }
     }
 
     protected void showNoteDialog() {

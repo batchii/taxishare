@@ -80,7 +80,7 @@ public class MyRidesListViewFragment extends ListFragment {
                         Log.d("NUM", "Num Riders: " + r.getRiders().size());
                         Log.d("TIME", "Ride Time: " + r.getRideTime());
                         Log.d("DATE", "Ride Date: " + r.getRideDate());
-                        RideItem ri = new RideItem(num, title, description);
+                        RideItem ri = new RideItem(num, title, description, r);
                         mItems.add(ri);
                         Log.d("BEFORE", "NUM " + mItems.get(0).numberRiders + " TITLE " + mItems.get(0).title + " DESC " + mItems.get(0).description);
                     }
@@ -132,8 +132,10 @@ public class MyRidesListViewFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // retrieve theListView item
         RideItem item = mItems.get(position);
+        String ride_id = item.ride.getObjectId();
 
         Intent rideDetails = new Intent(getActivity(), RideDetails.class);
+        rideDetails.putExtra("rideid", ride_id);
         startActivity(rideDetails);
 
         // do something

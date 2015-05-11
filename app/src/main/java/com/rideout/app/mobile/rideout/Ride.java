@@ -123,6 +123,11 @@ public class Ride extends ParseObject {
         put("riders", temp);
     }
 
+    public boolean hasRider(ParseUser user) {
+        ArrayList<ParseUser> users = getRiders();
+        return users.contains(user);
+    }
+
 
 
     //Updating the Riders list!!!!
