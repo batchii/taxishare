@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="Logout">logout</string>
     <string name="CreateAride">next</string>
     <string name="app_name">RideOut</string>
     <string name="title_section1">Local Rides</string>

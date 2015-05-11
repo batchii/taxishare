@@ -165,6 +165,9 @@ public class MainActivity extends ActionBarActivity
             startActivity(signIn);
             return true;
         }
+        else if (id == R.id.action_logout) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
