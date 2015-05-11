@@ -103,6 +103,10 @@ public class Ride extends ParseObject {
         put("riders", temp);
     }
 
+    //public void addRider(ArrayList<ParseUser> temp) {
+    ///    put("riders", temp);
+    //}
+
     public void addRider(ParseUser user) {
         //first get the arraylist of riders
         //add the user to the arraylist

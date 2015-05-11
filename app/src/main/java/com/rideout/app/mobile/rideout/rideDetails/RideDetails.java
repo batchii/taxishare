@@ -3,6 +3,7 @@ package com.rideout.app.mobile.rideout.rideDetails;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,7 +19,7 @@ public class RideDetails extends ActionBarActivity {
         setContentView(R.layout.activity_ride_details);
 
         String rideId = getIntent().getStringExtra("rideid");
-
+        Log.d("RIDEID", "Ride id: " + rideId);
         DetailItemFragment details = new DetailItemFragment();
         Bundle args = new Bundle();
         args.putString("ride", rideId);
@@ -29,6 +30,7 @@ public class RideDetails extends ActionBarActivity {
         ft.replace(R.id.detail_fragment, details);
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Execute the changes specified
+
         ft.commit();
     }
 

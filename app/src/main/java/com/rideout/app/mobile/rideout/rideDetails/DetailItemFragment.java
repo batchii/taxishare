@@ -62,7 +62,7 @@ public class DetailItemFragment extends ListFragment {
     private ArrayList<ParseUser> riders;
     private String formattedRiders = "";
 
-    private List<DetailItem> mItems = new ArrayList<>();
+    private List<DetailItem> mItems;
     private DetailArrayAdapter adapter;
 
     private String rideId;
@@ -75,8 +75,9 @@ public class DetailItemFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //mItems = new ArrayList<>();
-
+        mItems = new ArrayList<>();
+        adapter = new DetailArrayAdapter(getActivity(), mItems);
+        setListAdapter(adapter);
         Bundle args = getArguments();
         rideId = args.getString("ride");
 
@@ -84,18 +85,20 @@ public class DetailItemFragment extends ListFragment {
         query.getInBackground(rideId, new GetCallback<Ride>() {
             public void done(Ride object, ParseException e) {
                 if (e == null) {
+                    //Log.d("BEFORE FIRST POP", "Populate is about to be done.");
                     populate(object);
 
                 } else {
                     // something went wrong
                 }
+                adapter.notifyDataSetChanged();
             }
         });
 
         // initialize and set the list adapter
-        adapter = new DetailArrayAdapter(getActivity(), mItems);
+
         //setListAdapter(new MySimpleArrayAdapter(getActivity(), mItems));
-        setListAdapter(adapter);
+        //setListAdapter(adapter);
     }
 
     @Override
@@ -109,8 +112,9 @@ public class DetailItemFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // retrieve theListView item
         DetailItem item = mItems.get(position);
+        final View view = v;
 
-        switch(position){
+        switch(position) {
             case 0:
                 break;
             case 1:
@@ -127,17 +131,33 @@ public class DetailItemFragment extends ListFragment {
             case 6:
                 final Context context = getActivity();
 
-                if (item.description.equals("Join Ride")) {
+                if (item.title.equals("Join Ride")) {
+                    Log.d("TESTING", "Entered join method.");
                     ParseQuery<Ride> query = ParseQuery.getQuery("Ride");
                     query.getInBackground(rideId, new GetCallback<Ride>() {
                         public void done(Ride object, ParseException e) {
                             if (e == null) {
+
                                 ParseUser user = ParseUser.getCurrentUser();
+
                                 object.addRider(user);
+                                //Log.v("Second rider", "" + riders.get(1).getString("name"));
+                                //object.addRider(riders);
                                 object.saveInBackground();
+                                mItems.clear();
+
                                 populate(object);
+                                //adapter.clear();
+                                adapter.notifyDataSetChanged();
+
+                                Intent myRides = new Intent(getActivity(), MainActivity.class);
+                                startActivity(myRides);
+
+                                //Intent myRides = new Intent(getActivity(), MainActivity.class);
+                                //startActivity(myRides);
 
                             } else {
+                                Log.d("ERRRRRRROR", "Something bad happened");
                                 // something went wrong
                             }
                         }
@@ -155,7 +175,13 @@ public class DetailItemFragment extends ListFragment {
                                     Intent myRides = new Intent(getActivity(), MainActivity.class);
                                     startActivity(myRides);
                                 } else {
+                                    mItems.clear();
                                     populate(object);
+                                    //mItems.clear();
+                                    //adapter.clear();
+                                    adapter.notifyDataSetChanged();
+                                    Intent myRides = new Intent(getActivity(), MainActivity.class);
+                                    startActivity(myRides);
                                 }
                             } else {
                                 // something went wrong
@@ -174,21 +200,36 @@ public class DetailItemFragment extends ListFragment {
     private void populate(Ride ride) {
         //current = ride;
         ParseUser user = ParseUser.getCurrentUser();
+        Log.d("ADDED USER", "Name: " + user.getString("name"));
         rideDate = ride.getRideDate();
         rideTime = ride.getRideTime();
         startLocation = ride.getStartLocation();
         endLocation = ride.getEndLocation();
         notes = ride.getNotes();
         riders = ride.getRiders();
-
+        formattedRiders = "";
         SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
         formattedTime = sdf.format(rideTime);
 
         SimpleDateFormat ddf = new SimpleDateFormat("MM-dd-yyyy");
         formattedDate = ddf.format(rideDate);
 
-        int counter = 0;
+        //int counter = 0;
+        Log.d("RIDER SIZE", "There are " + riders.size());
+        for (int i = 0; i < riders.size(); i++) {
+            ParseUser u = riders.get(i);
+            try {
+                formattedRiders += u.fetchIfNeeded().getString("name");
+            } catch (ParseException e) {
+                Log.v("Error", e.toString());
+                e.printStackTrace();
+            }
+            if (i != riders.size() - 1)  {
+                formattedRiders += ", ";
+            }
+        }
 
+        /*
         for (ParseUser u : riders) {
             // format rider names here
             if (counter == riders.size() - 1) {
@@ -197,7 +238,7 @@ public class DetailItemFragment extends ListFragment {
                 formattedRiders += u.getString("name") + ", ";
             }
             counter++;
-        }
+        }*/
 
         if (mItems == null) {
             Context context = getActivity();
@@ -219,10 +260,14 @@ public class DetailItemFragment extends ListFragment {
         mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
                 Iconify.IconValue.fa_taxi).actionBarSize(), getString(R.string.dropoff),
                 endLocation));
-        if (notes != "") {
+        if (! notes.equals("")) {
             mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
                     Iconify.IconValue.fa_pencil_square).actionBarSize(), getString(R.string.notes),
                     notes));
+        } else {
+            mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
+                    Iconify.IconValue.fa_pencil_square).actionBarSize(), getString(R.string.notes),
+                    "None"));
         }
         mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
                 Iconify.IconValue.fa_users).actionBarSize(),getString(R.string.riders),
