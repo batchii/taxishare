@@ -49,6 +49,11 @@ public class AvailableRidesFragment extends ListFragment {
         //Get the user's current location
         LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        if (location == null) {
+            Toast.makeText(getActivity(), "Turn on Location Services to see rides around you!", Toast.LENGTH_LONG).show();
+            return;
+        }
         double currlong = location.getLongitude();
         double currlat = location.getLatitude();
 
