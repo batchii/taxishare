@@ -90,10 +90,10 @@ public class MainActivity extends ActionBarActivity
                 //.commit();
         switch(position){
             case 0:
-              /*  fragment = new AvailableRidesFragment();
+               fragment = new AvailableRidesFragment();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
-                        .commit();*/
+                        .commit();
                 break;
             case 1:
                 fragment = new MyRidesListViewFragment();

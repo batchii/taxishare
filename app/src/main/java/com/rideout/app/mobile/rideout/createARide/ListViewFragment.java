@@ -226,13 +226,13 @@ public class ListViewFragment extends ListFragment {
                 ride.saveInBackground();
 */
 
-                /*FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Fragment fragment = new AvailableRidesFragment();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
-                        .commit();*/
-                Intent intent = new Intent(getActivity(), MyRides.class);
-                startActivity(intent);
+                        .commit();
+                //Intent intent = new Intent(getActivity(), MyRides.class);
+                //startActivity(intent);
                 break;
         }
 
