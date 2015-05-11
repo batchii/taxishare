@@ -157,6 +157,14 @@ public class DetailItemFragment extends ListFragment {
             counter++;
         }
 
+        if (mItems == null) {
+            Context context = getActivity();
+            CharSequence text = "Data could not be loaded at this time. Please go back and try again";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
         mItems.add(new DetailItem(new IconDrawable(this.getActivity(),
                 Iconify.IconValue.fa_clock_o).actionBarSize(), getString(R.string.time),
                 formattedTime));
