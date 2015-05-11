@@ -154,7 +154,7 @@ public class ListViewFragment extends ListFragment {
                 final Ride ride = new Ride();
                 if (resultDate != null) {
                     if (curr > resultDate.getTime()) {
-                        Toast.makeText(context, "Invalid Date", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Invalid Date/Time", Toast.LENGTH_LONG).show();
                         return;
                     }
                     ride.setRideDate(resultDate);
@@ -163,8 +163,8 @@ public class ListViewFragment extends ListFragment {
                     return;
                 }
                 if (resultTime != null) {
-                    if (curr > resultDate.getTime()) {
-                        Toast.makeText(context, "Invalid Time", Toast.LENGTH_LONG).show();
+                    if (curr > resultTime.getTime()) {
+                        Toast.makeText(context, "Invalid Date/Time", Toast.LENGTH_LONG).show();
                         return;
                     }
                     ride.setRideTime(resultTime);
@@ -269,7 +269,7 @@ public class ListViewFragment extends ListFragment {
                         //resultDate = bundle.get("selectedDate", "error"); //Changed from getString
                         resultDate = c.getTime();
                         //format the date for display!
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
                         String formattedDate = sdf.format(resultDate);
 
                         Log.v("Date", formattedDate);
